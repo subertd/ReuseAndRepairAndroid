@@ -1,11 +1,13 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -52,6 +54,14 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onClickCategoriesButton(final View button) {
+
+        Log.i(TAG, "entering onClickCategoriesButton");
+
+        final Intent categoriesActivity = new Intent(this, CategoriesActivity.class);
+        startActivity(categoriesActivity);
+    }
+
     private void syncDatabase() {
         new DatabaseSynchronizer().execute();
     }
@@ -61,8 +71,8 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected String doInBackground(Void... params) {
             try {
-                final JSONObject jsonObject = new ServerProxy().syncDatabase();
-                new MySQLiteOpenHelper(MainActivity.this).syncDatabase(jsonObject);
+                final JSONObject database = new ServerProxy().syncDatabase();
+                new MySQLiteOpenHelper(MainActivity.this).syncDatabase(database);
                 return "Database Sync'd with Remote Server";
             }
             catch (final ServerException | DatabaseException e) {

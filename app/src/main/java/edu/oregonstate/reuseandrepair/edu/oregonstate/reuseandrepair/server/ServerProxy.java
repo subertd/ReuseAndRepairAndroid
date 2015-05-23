@@ -34,7 +34,7 @@ public class ServerProxy {
             final ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpClient.execute(request, responseHandler);
 
-            Log.i(TAG, response);
+            Log.i(TAG, "Response: '" + response + "'");
 
             final JSONObject jsonResponse = new JSONObject(response);
 

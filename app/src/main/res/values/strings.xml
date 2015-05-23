@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">ReuseAndRepair</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="categories_activity">Categories Activity</string>
+    <string name="items_activity">Items Activity</string>
+    <string name="organizations_activity">Organizations Activity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_categories">CategoriesActivity</string>
     <string name="title_activity_items">ItemsActivity</string>

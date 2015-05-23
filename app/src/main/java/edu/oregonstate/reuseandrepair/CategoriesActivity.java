@@ -1,20 +1,27 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.DatabaseException;
+import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerException;
 import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerProxy;
 
 
 public class CategoriesActivity extends ActionBarActivity {
+
+    private static final String TAG = CategoriesActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,29 +54,27 @@ public class CategoriesActivity extends ActionBarActivity {
     }
 
     private void populateCategoriesList() {
+        Log.i(TAG, "entering populateCategoriesList");
 
         new CategoriesListPopulator().execute();
     }
 
-    private class CategoriesListPopulator extends AsyncTask<Void, Void, JSONObject> {
+    private class CategoriesListPopulator extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected JSONObject doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
 
-            try {
-                final JSONObject jsonObject = new ServerProxy().syncDatabase();
-                return jsonObject;
-            }
-            catch (final ServerException e) {
-                // TODO handle
-                return null;
-            }
+            final Cursor categories = new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
+            // TODO populate a list view with the cursor
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(final JSONObject result) {
-            Toast.makeText(CategoriesActivity.this, "This is a test message", Toast.LENGTH_LONG).show();
-            // TODO implement
+        protected void onPostExecute(final Void result) {
+
+            Toast.makeText(CategoriesActivity.this, "TEMP categories list should now be populated",
+                    Toast.LENGTH_LONG).show();
         }
     }
 }
