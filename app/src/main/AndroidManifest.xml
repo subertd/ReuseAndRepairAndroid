@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.oregonstate.reuseandrepair" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +18,30 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CategoriesActivity"
+            android:label="@string/title_activity_categories"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ItemsActivity"
+            android:label="@string/title_activity_items"
+            android:parentActivityName=".CategoriesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.CategoriesActivity" />
+        </activity>
+        <activity
+            android:name=".OrganizationsActivity"
+            android:label="@string/title_activity_organizations"
+            android:parentActivityName=".ItemsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.ItemsActivity" />
         </activity>
     </application>
 

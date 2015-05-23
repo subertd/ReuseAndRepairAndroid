@@ -3,7 +3,6 @@ package edu.oregonstate.reuseandrepair;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,29 +10,24 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.DatabaseException;
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerException;
 import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerProxy;
 
 
-public class MainActivity extends ActionBarActivity {
-
-    private static final String TAG = MainActivity.class.getName();
+public class CategoriesActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_categories);
 
-        syncDatabase();
+        populateCategoriesList();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_categories, menu);
         return true;
     }
 
@@ -52,28 +46,30 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void syncDatabase() {
-        new DatabaseSynchronizer().execute();
+    private void populateCategoriesList() {
+
+        new CategoriesListPopulator().execute();
     }
 
-    private class DatabaseSynchronizer extends AsyncTask<Void, Void, String> {
+    private class CategoriesListPopulator extends AsyncTask<Void, Void, JSONObject> {
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected JSONObject doInBackground(Void... params) {
+
             try {
                 final JSONObject jsonObject = new ServerProxy().syncDatabase();
-                new MySQLiteOpenHelper(MainActivity.this).syncDatabase(jsonObject);
-                return "Database Sync'd with Remote Server";
+                return jsonObject;
             }
-            catch (final ServerException | DatabaseException e) {
-                Log.e(TAG, e.getMessage());
-                return e.getMessage();
+            catch (final ServerException e) {
+                // TODO handle
+                return null;
             }
         }
 
         @Override
-        protected void onPostExecute(final String result) {
-            Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
+        protected void onPostExecute(final JSONObject result) {
+            Toast.makeText(CategoriesActivity.this, "This is a test message", Toast.LENGTH_LONG).show();
+            // TODO implement
         }
     }
 }
