@@ -9,14 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.DatabaseException;
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerException;
-import edu.oregonstate.reuseandrepair.edu.oregonstate.reuseandrepair.server.ServerProxy;
+import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
 
 public class CategoriesActivity extends ActionBarActivity {
