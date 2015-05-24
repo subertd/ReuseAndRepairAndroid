@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -7,7 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
@@ -15,6 +23,7 @@ import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 public class CategoriesActivity extends ActionBarActivity {
 
     private static final String TAG = CategoriesActivity.class.getName();
+    ListView listView ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +66,27 @@ public class CategoriesActivity extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
-            final Cursor categories = new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
             // TODO populate a list view with the cursor
+            listView = (ListView) findViewById(R.id.cat_list);
+            Cursor catCursor = new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
+            String[] columns = new String[] {"category_id", "category_name"};
+            int[] to = new int[] {R.id.cat_id, R.id.cat_name};
+
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(CategoriesActivity.this, R.layout.activity_categories, catCursor, columns, to, 0);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> listView, View view, int position, long id) {
+                    // Set cursor at click position
+                    Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+
+                    // Get corresponding category id from this row
+                    String catID = cursor.getString(cursor.getColumnIndexOrThrow("cat_id"));
+                    Toast.makeText(getApplicationContext(),catID, Toast.LENGTH_SHORT).show();
+                }
+            });
 
             return null;
         }

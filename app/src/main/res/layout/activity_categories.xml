@@ -10,13 +10,28 @@
     <ListView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/categories_list"
+        android:id="@+id/cat_list"
     />
 
     <TextView
         android:text="@string/categories_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/cat_id"
+        />
+
+    <TextView
+        android:text="@string/categories_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cat_name"
+        />
+
+    <TextView
+        android:text="@string/categories_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text1"
     />
 
 </LinearLayout>
