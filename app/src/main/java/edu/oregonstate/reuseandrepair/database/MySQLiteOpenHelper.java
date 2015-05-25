@@ -38,8 +38,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TABLE_ORGANIZATION_PHYSICAL_ADDRESS = "physical_address";
     private static final String TABLE_ORGANIZATION_WEBSITE_URL = "website_url";
 
-    private static final String TABLE_CATEGORY_COL_ID = "category_id";
-    private static final String TABLE_CATEGORY_COL_NAME = "category_name";
+    public static final String TABLE_CATEGORY_COL_ID = "category_id";
+    public static final String TABLE_CATEGORY_COL_NAME = "category_name";
 
     private static final String TABLE_ITEM_COL_ID = "item_id";
     private static final String TABLE_ITEM_COL_NAME = "item_name";

@@ -66,13 +66,23 @@ public class CategoriesActivity extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final Void result) {
+
+            Toast.makeText(CategoriesActivity.this, "TEMP categories list should now be populated", Toast.LENGTH_LONG).show();
+
             // TODO populate a list view with the cursor
             listView = (ListView) findViewById(R.id.cat_list);
             Cursor catCursor = new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
-            String[] columns = new String[] {"category_id", "category_name"};
+            String[] columns = new String[] {MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID, MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME};
             int[] to = new int[] {R.id.cat_id, R.id.cat_name};
 
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(CategoriesActivity.this, R.layout.activity_categories, catCursor, columns, to, 0);
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(CategoriesActivity.this, R.layout.activity_categories_entry, catCursor, columns, to, 0);
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -84,18 +94,9 @@ public class CategoriesActivity extends ActionBarActivity {
 
                     // Get corresponding category id from this row
                     String catID = cursor.getString(cursor.getColumnIndexOrThrow("cat_id"));
-                    Toast.makeText(getApplicationContext(),catID, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), catID, Toast.LENGTH_SHORT).show();
                 }
             });
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final Void result) {
-
-            Toast.makeText(CategoriesActivity.this, "TEMP categories list should now be populated",
-                    Toast.LENGTH_LONG).show();
         }
     }
 }
