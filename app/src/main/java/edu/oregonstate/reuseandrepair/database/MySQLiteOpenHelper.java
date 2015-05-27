@@ -14,13 +14,15 @@ import org.json.JSONObject;
 
 /**
  * Created by Donald on 5/23/2015.
+ *
+ * Creates a custom SQLite database for the application
  */
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String TAG = MySQLiteOpenHelper.class.getName();
 
     private static final String DATABASE_NAME = "cs419-g15";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 10;
 
     // Table name constants
     private static final String TABLE_CATEGORY = "Category";
@@ -32,16 +34,16 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     //
     // Column name constants
-    private static final String TABLE_ORGANIZATION_COL_ID = "organization_id";
+    private static final String TABLE_ORGANIZATION_COL_ID = "_id";
     private static final String TABLE_ORGANIZATION_COL_NAME = "organization_name";
     private static final String TABLE_ORGANIZATION_PHONE_NUMBER = "phone_number";
     private static final String TABLE_ORGANIZATION_PHYSICAL_ADDRESS = "physical_address";
     private static final String TABLE_ORGANIZATION_WEBSITE_URL = "website_url";
 
-    private static final String TABLE_CATEGORY_COL_ID = "category_id";
-    private static final String TABLE_CATEGORY_COL_NAME = "category_name";
+    public static final String TABLE_CATEGORY_COL_ID = "_id";
+    public static final String TABLE_CATEGORY_COL_NAME = "category_name";
 
-    private static final String TABLE_ITEM_COL_ID = "item_id";
+    private static final String TABLE_ITEM_COL_ID = "_id";
     private static final String TABLE_ITEM_COL_NAME = "item_name";
 
     private static final String TABLE_ITEM_CATEGORY_COL_ITEM_ID = "item_id";
@@ -100,7 +102,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_ORGANIZATION_TABLE =
         "CREATE TABLE `" + TABLE_ORGANIZATION + "` (" +
-            "`organization_id` INT NOT NULL PRIMARY KEY," +
+            "`" + TABLE_ORGANIZATION_COL_ID + "` INT NOT NULL PRIMARY KEY," +
             "`organization_name` VARCHAR ( 255 ) NOT NULL," +
             "`phone_number` VARCHAR( 14 ) NULL," +
             "`website_url` VARCHAR( 255 ) NULL," +
@@ -109,13 +111,13 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_CATEGORY_TABLE =
         "CREATE TABLE `" + TABLE_CATEGORY + "` (" +
-            "`category_id` INT NOT NULL PRIMARY KEY," +
+            "`" + TABLE_CATEGORY_COL_ID + "` INT NOT NULL PRIMARY KEY," +
             "`category_name` VARCHAR( 255 ) NOT NULL" +
     ")";
 
     private static final String CREATE_ITEM_TABLE =
         "CREATE TABLE `" + TABLE_ITEM + "` (" +
-            "`item_id` INT NOT NULL PRIMARY KEY," +
+            "`" + TABLE_ITEM_COL_ID + "` INT NOT NULL PRIMARY KEY," +
             "`item_name` VARCHAR( 255 ) NOT NULL" +
     ")";
 
@@ -352,9 +354,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
-        final Cursor result = db.query(TABLE_CATEGORY, null, null, selectionArgs, null, null, null);
-        db.close();
-        return result;
+        return db.query(TABLE_CATEGORY, null, null, selectionArgs, null, null, null);
     }
 
     public Cursor getItemsCursor(final long categoryId) {
@@ -365,9 +365,11 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         final Cursor result = db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
         */
         throw new RuntimeException("Not yet implemented");
+        // TODO implement
     }
 
     public Cursor getOrganizations(final long itemId) {
         throw new RuntimeException("Not yet implemented");
+        // TODO implement
     }
 }
