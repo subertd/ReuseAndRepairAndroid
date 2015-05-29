@@ -43,14 +43,14 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_CATEGORY_COL_ID = "_id";
     public static final String TABLE_CATEGORY_COL_NAME = "category_name";
 
-    private static final String TABLE_ITEM_COL_ID = "_id";
-    private static final String TABLE_ITEM_COL_NAME = "item_name";
+    public static final String TABLE_ITEM_COL_ID = "_id";
+    public static final String TABLE_ITEM_COL_NAME = "item_name";
 
-    private static final String TABLE_ITEM_CATEGORY_COL_ITEM_ID = "item_id";
-    private static final String TABLE_ITEM_CATEGORY_COL_CATEGORY_ID = "category_id";
+    public static final String TABLE_ITEM_CATEGORY_COL_ITEM_ID = "item_id";
+    public static final String TABLE_ITEM_CATEGORY_COL_CATEGORY_ID = "category_id";
 
-    private static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ORGANIZATION_ID = "organization_id";
-    private static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ITEM_ID = "item_id";
+    public static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ORGANIZATION_ID = "organization_id";
+    public static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ITEM_ID = "item_id";
 
     private static final String TABLE_ORGANIZATION_REPAIR_COL_ORGANIZATION_ID = "organization_id";
     private static final String TABLE_ORGANIZATION_REPAIR_COL_ITEM_ID = "item_id";
@@ -358,18 +358,16 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getItemsCursor(final long categoryId) {
-
-        /*
+        // TODO - implement query WHERE term
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
-        final Cursor result = db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
-        */
-        throw new RuntimeException("Not yet implemented");
-        // TODO implement
+        return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
     }
 
-    public Cursor getOrganizations(final long itemId) {
-        throw new RuntimeException("Not yet implemented");
-        // TODO implement
+    public Cursor getOrgsCursor(final long itemId) {
+        // TODO - implement query WHERE term
+        final SQLiteDatabase db = getReadableDatabase();
+        final String[] selectionArgs = {};
+        return db.query(TABLE_ORGANIZATION, null, null, selectionArgs, null, null, null);
     }
 }

@@ -17,33 +17,33 @@ import android.widget.Toast;
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
 
-public class CategoriesActivity extends ActionBarActivity {
+public class ItemListingActivity extends ActionBarActivity {
 
     private static final String[] FROM = {
-            MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID,
-            MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME
+            MySQLiteOpenHelper.TABLE_ITEM_COL_ID,
+            MySQLiteOpenHelper.TABLE_ITEM_COL_NAME
     };
 
     private static final int[] TO = {
-            R.id.cat_id,
-            R.id.cat_name
+            R.id.item_id,
+            R.id.item_name
     };
 
-    private static final String TAG = CategoriesActivity.class.getName();
+    private static final String TAG = ItemListingActivity.class.getName();
     ListView listView ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
+        setContentView(R.layout.activity_item_listing);
 
-        populateCategoriesList();
+        populateItemList();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_categories, menu);
+        getMenuInflater().inflate(R.menu.menu_items, menu);
         return true;
     }
 
@@ -62,29 +62,32 @@ public class CategoriesActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void populateCategoriesList() {
-        Log.i(TAG, "entering populateCategoriesList");
+    private void populateItemList() {
+        Log.i(TAG, "entering populateItemList");
 
-        new CategoriesListPopulator().execute();
+        new ItemsListPopulator().execute();
     }
 
-    private class CategoriesListPopulator extends AsyncTask<Void, Void, Cursor> {
+    private class ItemsListPopulator extends AsyncTask<Void, Void, Cursor> {
 
         @Override
         protected Cursor doInBackground(Void... params) {
 
-            return new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
+            Intent i = getIntent();
+            String catId = i.getStringExtra("catId");
+
+            return new MySQLiteOpenHelper(ItemListingActivity.this).getItemsCursor((Long.valueOf(catId)));
         }
 
         @Override
         protected void onPostExecute(final Cursor cursor) {
 
             // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.cat_list);
+            listView = (ListView) findViewById(R.id.item_list);
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                    CategoriesActivity.this,
-                    R.layout.activity_categories_entry,
+                    ItemListingActivity.this,
+                    R.layout.activity_item_listing_entry,
                     cursor,
                     FROM,
                     TO,
@@ -102,13 +105,13 @@ public class CategoriesActivity extends ActionBarActivity {
                     Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                     // Get corresponding category id and name from this row
-                    String catId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID));
-                    String catName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
+                    String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_COL_ID));
+
+                    //        Toast.makeText(CategoriesActivity.this, catId, Toast.LENGTH_SHORT).show();
 
                     // Start new activity to show list of matching organizations
-                    Intent i = new Intent(CategoriesActivity.this, ItemListingActivity.class);
-                    i.putExtra("catId", catId);
-                    i.putExtra("catName", catName);
+                    Intent i = new Intent(ItemListingActivity.this, OrgListingActivity.class);
+                    i.putExtra("itemId", itemId);
                     startActivity(i);
                 }
             });

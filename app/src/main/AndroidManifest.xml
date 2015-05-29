@@ -43,6 +43,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.reuseandrepair.ItemsActivity" />
         </activity>
+        <activity
+            android:name=".ItemListingActivity"
+            android:label="@string/title_activity_org_listing" >
+        </activity>
+        <activity
+            android:name=".OrgListingActivity"
+            android:label="@string/title_activity_org_listing" >
+        </activity>
     </application>
 
 </manifest>
