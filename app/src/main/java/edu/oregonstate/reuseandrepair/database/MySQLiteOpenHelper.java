@@ -7,10 +7,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import edu.oregonstate.reuseandrepair.OrganizationsActivity;
 
 /**
  * Created by Donald on 5/23/2015.
@@ -34,11 +37,11 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     //
     // Column name constants
-    private static final String TABLE_ORGANIZATION_COL_ID = "_id";
-    private static final String TABLE_ORGANIZATION_COL_NAME = "organization_name";
-    private static final String TABLE_ORGANIZATION_PHONE_NUMBER = "phone_number";
-    private static final String TABLE_ORGANIZATION_PHYSICAL_ADDRESS = "physical_address";
-    private static final String TABLE_ORGANIZATION_WEBSITE_URL = "website_url";
+    public static final String TABLE_ORGANIZATION_COL_ID = "_id";
+    public static final String TABLE_ORGANIZATION_COL_NAME = "organization_name";
+    public static final String TABLE_ORGANIZATION_PHONE_NUMBER = "phone_number";
+    public static final String TABLE_ORGANIZATION_PHYSICAL_ADDRESS = "physical_address";
+    public static final String TABLE_ORGANIZATION_WEBSITE_URL = "website_url";
 
     public static final String TABLE_CATEGORY_COL_ID = "_id";
     public static final String TABLE_CATEGORY_COL_NAME = "category_name";
@@ -350,24 +353,38 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Listing of all Categories
     public Cursor getCategoriesCursor() {
-
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
         return db.query(TABLE_CATEGORY, null, null, selectionArgs, null, null, null);
     }
 
+    // Listing of Items that match categoryId
     public Cursor getItemsCursor(final long categoryId) {
-        // TODO - implement query WHERE term
+        // TODO - implement query WHERE _id = categoryId
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
         return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
     }
 
+    // Listing of Orgs that accept itemId
     public Cursor getOrgsCursor(final long itemId) {
-        // TODO - implement query WHERE term
+        // TODO - implement query WHERE term _id = itemId
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
         return db.query(TABLE_ORGANIZATION, null, null, selectionArgs, null, null, null);
+    }
+
+    // Data about organization matching orgId
+    public Cursor getOrgInfoCursor(final long orgId) {
+        final SQLiteDatabase db = getReadableDatabase();
+        String orgIdString = String.valueOf(orgId);
+        String selectionString = "TABLE_ORGANIZATION_COL_ID=?";
+        final String[] selectionArgs = {orgIdString};
+
+        return db.query(TABLE_ORGANIZATION, null, null, null, null, null, null, null);
+//        return db.query(TABLE_ORGANIZATION, null, selectionString, selectionArgs, null, null, null, null);
+//        return db.rawQuery("SELECT * FROM TABLE_ORGANIZATION WHERE TABLE_ORGANIZATION_COL_ID='" + orgIdString + "'", null);
     }
 }

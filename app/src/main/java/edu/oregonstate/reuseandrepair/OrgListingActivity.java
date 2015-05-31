@@ -20,13 +20,13 @@ import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 public class OrgListingActivity extends ActionBarActivity {
 
     private static final String[] FROM = {
-            MySQLiteOpenHelper.TABLE_ITEM_COL_ID,
-            MySQLiteOpenHelper.TABLE_ITEM_COL_NAME
+            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID,
+            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_NAME
     };
 
     private static final int[] TO = {
-            R.id.item_id,
-            R.id.item_name
+            R.id.org_id,
+            R.id.org_name
     };
 
     private static final String TAG = OrgListingActivity.class.getName();
@@ -43,7 +43,7 @@ public class OrgListingActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_organizations, menu);
+        getMenuInflater().inflate(R.menu.menu_org_listing, menu);
         return true;
     }
 
@@ -77,44 +77,42 @@ public class OrgListingActivity extends ActionBarActivity {
             String itemId = i.getStringExtra("itemId");
 
             return new MySQLiteOpenHelper(OrgListingActivity.this).getOrgsCursor((Long.valueOf(itemId)));
+
+      //          return new MySQLiteOpenHelper(OrgListingActivity.this).getItemsCursor((Long.valueOf(itemId)));
         }
 
         @Override
         protected void onPostExecute(final Cursor cursor) {
 
-//            // populate a list view with the cursor
-//            listView = (ListView) findViewById(R.id.org_list);
-//
-//            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-//                    OrgListingActivity.this,
-//                    R.layout.activity_org_listing_entry,
-//                    cursor,
-//                    FROM,
-//                    TO,
-//                    0);
+            // populate a list view with the cursor
+            listView = (ListView) findViewById(R.id.org_list);
 
-//            listView.setAdapter(adapter);
+            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                    OrgListingActivity.this,
+                    R.layout.activity_org_listing_entry,
+                    cursor,
+                    FROM,
+                    TO,
+                    0);
 
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                @Override
-//                public void onItemClick(final AdapterView<?> listView,
-//                                        final View view, final int position, final long id)
-//                {
-//                    // Set cursor at click position
-//                    Cursor cursor = (Cursor) listView.getItemAtPosition(position);
-//
-//                    // Get corresponding category id and name from this row
-//                    String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_COL_ID));
-//
-//                    //        Toast.makeText(CategoriesActivity.this, catId, Toast.LENGTH_SHORT).show();
-//
-//                    // Start new activity to show list of matching organizations
-//                    Intent i = new Intent(ItemListingActivity.this, OrgListingActivity.class);
-//                    i.putExtra("itemId", itemId);
-//                    startActivity(i);
-//                }
-//            });
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(final AdapterView<?> listView, final View view, final int position, final long id) {
+                    // Set cursor at click position
+                    Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+
+                    // Get corresponding org id and name from this row
+                    String orgId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID));
+
+                    // Start new activity to show organization contact info
+                    Intent i = new Intent(OrgListingActivity.this, OrganizationsActivity.class);
+                    i.putExtra("orgId", orgId);
+                    startActivity(i);
+                }
+            });
         }
     }
 }
