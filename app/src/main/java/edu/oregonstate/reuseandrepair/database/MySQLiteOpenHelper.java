@@ -362,29 +362,38 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     // Listing of Items that match categoryId
     public Cursor getItemsCursor(final long categoryId) {
-        // TODO - implement query WHERE _id = categoryId
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
         return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
+
+        // TODO - implement query: SELECT item_id FROM TABLE_ITEM_CATEGORY WHERE category_id = categoryId
+        // TODO - then from results another query: SELECT item_name FROM TABLE_ITEM WHERE item_id = results
+//        String categoryIdString = String.valueOf(categoryId);
+//        String selectionStatement = "category_id=?";
+//        selectionArgs = {categoryIdString};
     }
 
     // Listing of Orgs that accept itemId
     public Cursor getOrgsCursor(final long itemId) {
-        // TODO - implement query WHERE term _id = itemId
-        final SQLiteDatabase db = getReadableDatabase();
-        final String[] selectionArgs = {};
-        return db.query(TABLE_ORGANIZATION, null, null, selectionArgs, null, null, null);
+        SQLiteDatabase db = getReadableDatabase();
+        String[] selectionArgs = {};
+
+        return db.query(TABLE_ORGANIZATION, null, null, selectionArgs, null, null, null, null);
+
+        // TODO - implement query: SELECT org_id FROM TABLE_ORGANIZATION_REUSE_ITEM WHERE item_id = itemId
+        // TODO - then from results another query: SELECT organization_name FROM TABLE_ORGANIZATION_REPAIR_ITEM WHERE org_id = results
+//        String itemIdString = String.valueOf(itemId);
+//        String selectionStatement = "item_id=?";
+//        selectionArgs = {itemIdString};
     }
 
     // Data about organization matching orgId
     public Cursor getOrgInfoCursor(final long orgId) {
-        final SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String orgIdString = String.valueOf(orgId);
-        String selectionString = "TABLE_ORGANIZATION_COL_ID=?";
-        final String[] selectionArgs = {orgIdString};
+        String selectionStatement = "_id=?";
+        String[] selectionArgs = {orgIdString};
 
-        return db.query(TABLE_ORGANIZATION, null, null, null, null, null, null, null);
-//        return db.query(TABLE_ORGANIZATION, null, selectionString, selectionArgs, null, null, null, null);
-//        return db.rawQuery("SELECT * FROM TABLE_ORGANIZATION WHERE TABLE_ORGANIZATION_COL_ID='" + orgIdString + "'", null);
+        return db.query(TABLE_ORGANIZATION, null, selectionStatement, selectionArgs, null, null, null, null);
     }
 }

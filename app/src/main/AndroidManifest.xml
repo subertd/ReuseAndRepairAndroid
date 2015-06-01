@@ -45,7 +45,7 @@
         </activity>
         <activity
             android:name=".ItemListingActivity"
-            android:label="@string/title_activity_org_listing" >
+            android:label="ItemListingActivity" >
         </activity>
         <activity
             android:name=".OrgListingActivity"
