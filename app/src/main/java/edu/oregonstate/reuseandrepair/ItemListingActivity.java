@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
@@ -76,7 +75,7 @@ public class ItemListingActivity extends ActionBarActivity {
             Intent i = getIntent();
             String catId = i.getStringExtra("catId");
 
-            return new MySQLiteOpenHelper(ItemListingActivity.this).getItemsCursor((Long.valueOf(catId)));
+            return new MySQLiteOpenHelper(ItemListingActivity.this).getItemsCursorByCategory((Long.valueOf(catId)));
         }
 
         @Override

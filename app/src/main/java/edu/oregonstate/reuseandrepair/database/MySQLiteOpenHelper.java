@@ -7,13 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import edu.oregonstate.reuseandrepair.OrganizationsActivity;
 
 /**
  * Created by Donald on 5/23/2015.
@@ -152,6 +149,13 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         "PRIMARY KEY (`organization_id`, `item_id`)" +
     ")";
     //
+
+    // Queries
+    private static final String SELECT_ITEMS_BY_CATEGORY_QUERY =
+        "SELECT * FROM `" + TABLE_ITEM + "` i " +
+            "LEFT JOIN `" + TABLE_ITEM_CATEGORY + "` ic ON i.`" + TABLE_ITEM_COL_ID + "` = ic.`" + TABLE_ITEM_CATEGORY_COL_ITEM_ID + "` " +
+            "LEFT JOIN `" + TABLE_CATEGORY + "` c ON c.`" + TABLE_CATEGORY_COL_ID + "` = ic.`" + TABLE_ITEM_CATEGORY_COL_CATEGORY_ID + "` " +
+        "WHERE c.`" + TABLE_CATEGORY_COL_ID + "` = ?";
 
     public MySQLiteOpenHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -353,18 +357,36 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Listing of all Categories
+    /**
+     * get and return an SQLite cursor containing each category
+     *
+     * @return the cursor containing each category
+     */
     public Cursor getCategoriesCursor() {
         final SQLiteDatabase db = getReadableDatabase();
         final String[] selectionArgs = {};
         return db.query(TABLE_CATEGORY, null, null, selectionArgs, null, null, null);
     }
 
-    // Listing of Items that match categoryId
-    public Cursor getItemsCursor(final long categoryId) {
+    /**
+     * get and return an SQLite cursor containing all items that belong to a given category
+     *
+     * @param categoryId the id of the category to filter the results by
+     * @return the cursor containing all items that belong to a given category
+     */
+    public Cursor getItemsCursorByCategory(final long categoryId) {
         final SQLiteDatabase db = getReadableDatabase();
-        final String[] selectionArgs = {};
-        return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
+        final String[] selectionArgs = {String.valueOf(categoryId)};
+
+        // TODO handle category 0 ( no category )
+
+        Log.i(TAG, SELECT_ITEMS_BY_CATEGORY_QUERY);
+
+        //throw new RuntimeException("Not yet implemented");
+
+        return db.rawQuery(SELECT_ITEMS_BY_CATEGORY_QUERY, selectionArgs, null);
+
+        //return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
 
         // TODO - implement query: SELECT item_id FROM TABLE_ITEM_CATEGORY WHERE category_id = categoryId
         // TODO - then from results another query: SELECT item_name FROM TABLE_ITEM WHERE item_id = results

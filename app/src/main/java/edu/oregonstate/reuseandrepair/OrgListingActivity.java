@@ -78,7 +78,7 @@ public class OrgListingActivity extends ActionBarActivity {
 
             return new MySQLiteOpenHelper(OrgListingActivity.this).getOrgsCursor((Long.valueOf(itemId)));
 
-      //          return new MySQLiteOpenHelper(OrgListingActivity.this).getItemsCursor((Long.valueOf(itemId)));
+      //          return new MySQLiteOpenHelper(OrgListingActivity.this).getItemsCursorByCategory((Long.valueOf(itemId)));
         }
 
         @Override
