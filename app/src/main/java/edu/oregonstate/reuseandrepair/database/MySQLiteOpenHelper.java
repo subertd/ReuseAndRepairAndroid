@@ -52,8 +52,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ORGANIZATION_ID = "organization_id";
     public static final String TABLE_ORGANIZATION_REUSE_ITEM_COL_ITEM_ID = "item_id";
 
-    private static final String TABLE_ORGANIZATION_REPAIR_COL_ORGANIZATION_ID = "organization_id";
-    private static final String TABLE_ORGANIZATION_REPAIR_COL_ITEM_ID = "item_id";
+    private static final String TABLE_ORGANIZATION_REPAIR_ITEM_COL_ORGANIZATION_ID = "organization_id";
+    private static final String TABLE_ORGANIZATION_REPAIR_ITEM_COL_ITEM_ID = "item_id";
     private static final String TABLE_ORGANIZATION_REPAIR_COL_ADDITIONAL_REPAIR_INFO = "additional_repair_info";
     //
 
@@ -156,6 +156,18 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             "LEFT JOIN `" + TABLE_ITEM_CATEGORY + "` ic ON i.`" + TABLE_ITEM_COL_ID + "` = ic.`" + TABLE_ITEM_CATEGORY_COL_ITEM_ID + "` " +
             "LEFT JOIN `" + TABLE_CATEGORY + "` c ON c.`" + TABLE_CATEGORY_COL_ID + "` = ic.`" + TABLE_ITEM_CATEGORY_COL_CATEGORY_ID + "` " +
         "WHERE c.`" + TABLE_CATEGORY_COL_ID + "` = ?";
+
+    private static final String SELECT_ORGANIZATIONS_BY_REUSE_ITEM =
+        "SELECT * FROM `" + TABLE_ORGANIZATION + "` o " +
+            "INNER JOIN `" + TABLE_ORGANIZATION_REUSE_ITEM + "` oi " +
+                "ON o.`" + TABLE_ORGANIZATION_COL_ID + "` = oi.`" + TABLE_ORGANIZATION_REUSE_ITEM_COL_ORGANIZATION_ID + "` " +
+        "WHERE oi.`" + TABLE_ORGANIZATION_REUSE_ITEM_COL_ITEM_ID + "` = ?";
+
+    private static final String SELECT_ORGANIZATIONS_BY_REPAIR_ITEM =
+            "SELECT * FROM `" + TABLE_ORGANIZATION + "` o " +
+                    "INNER JOIN `" + TABLE_ORGANIZATION_REPAIR_ITEM + "` oi " +
+                    "ON o.`" + TABLE_ORGANIZATION_COL_ID + "` = oi.`" + TABLE_ORGANIZATION_REPAIR_ITEM_COL_ORGANIZATION_ID + "` " +
+                    "WHERE oi.`" + TABLE_ORGANIZATION_REPAIR_ITEM_COL_ITEM_ID + "` = ?";
 
     public MySQLiteOpenHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -312,8 +324,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             for (int i = 0; i < organizationRepairItems.length(); ++i) {
                 final JSONObject organizationRepairItem = organizationRepairItems.getJSONObject(i);
                 final ContentValues contentValues = new ContentValues();
-                contentValues.put(TABLE_ORGANIZATION_REPAIR_COL_ORGANIZATION_ID, organizationRepairItem.getLong(PRP_ORGANIZATION_REPAIR_ITEM_ORGANIZATION_ID));
-                contentValues.put(TABLE_ORGANIZATION_REPAIR_COL_ITEM_ID, organizationRepairItem.getLong(PRP_ORGANIZATION_REPAIR_ITEM_ITEM_ID));
+                contentValues.put(TABLE_ORGANIZATION_REPAIR_ITEM_COL_ORGANIZATION_ID, organizationRepairItem.getLong(PRP_ORGANIZATION_REPAIR_ITEM_ORGANIZATION_ID));
+                contentValues.put(TABLE_ORGANIZATION_REPAIR_ITEM_COL_ITEM_ID, organizationRepairItem.getLong(PRP_ORGANIZATION_REPAIR_ITEM_ITEM_ID));
                 contentValues.put(TABLE_ORGANIZATION_REPAIR_COL_ADDITIONAL_REPAIR_INFO, organizationRepairItem.getString(PRP_ORGANIZATION_REPAIR_ITEM_ADDITIONAL_REPAIR_INFO));
                 db.insertOrThrow(TABLE_ORGANIZATION_REPAIR_ITEM, null, contentValues);
             }
@@ -382,31 +394,33 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
         Log.i(TAG, SELECT_ITEMS_BY_CATEGORY_QUERY);
 
-        //throw new RuntimeException("Not yet implemented");
-
         return db.rawQuery(SELECT_ITEMS_BY_CATEGORY_QUERY, selectionArgs, null);
-
-        //return db.query(TABLE_ITEM, null, null, selectionArgs, null, null, null);
-
-        // TODO - implement query: SELECT item_id FROM TABLE_ITEM_CATEGORY WHERE category_id = categoryId
-        // TODO - then from results another query: SELECT item_name FROM TABLE_ITEM WHERE item_id = results
-//        String categoryIdString = String.valueOf(categoryId);
-//        String selectionStatement = "category_id=?";
-//        selectionArgs = {categoryIdString};
     }
 
-    // Listing of Orgs that accept itemId
-    public Cursor getOrgsCursor(final long itemId) {
+    /**
+     * get and return an SQLite cursor containing all organization that reuse a given item
+     *
+     * @param itemId the id of the item to filter the results by
+     * @return the cursor containing all organization that reuse the given item
+     */
+    public Cursor getOrganizationsCursorByReuseItem(final long itemId) {
         SQLiteDatabase db = getReadableDatabase();
-        String[] selectionArgs = {};
+        String[] selectionArgs = {String.valueOf(itemId)};
 
-        return db.query(TABLE_ORGANIZATION, null, null, selectionArgs, null, null, null, null);
+        return db.rawQuery(SELECT_ORGANIZATIONS_BY_REUSE_ITEM, selectionArgs, null);
+    }
 
-        // TODO - implement query: SELECT org_id FROM TABLE_ORGANIZATION_REUSE_ITEM WHERE item_id = itemId
-        // TODO - then from results another query: SELECT organization_name FROM TABLE_ORGANIZATION_REPAIR_ITEM WHERE org_id = results
-//        String itemIdString = String.valueOf(itemId);
-//        String selectionStatement = "item_id=?";
-//        selectionArgs = {itemIdString};
+    /**
+     * get and return an SQLite cursor containing all organization that repair a given item
+     *
+     * @param itemId the id of the item to filter the results by
+     * @return the cursor containing all organization that repair the given item
+     */
+    public Cursor getOrganizationsCursorByRepairItem(final long itemId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String[] selectionArgs = {String.valueOf(itemId)};
+
+        return db.rawQuery(SELECT_ORGANIZATIONS_BY_REPAIR_ITEM, selectionArgs, null);
     }
 
     // Data about organization matching orgId
