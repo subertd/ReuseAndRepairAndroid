@@ -104,7 +104,7 @@ public class ItemListingActivity extends ActionBarActivity {
                     Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                     // Get corresponding category id and name from this row
-                    String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_COL_ID));
+                    String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_CATEGORY_COL_ITEM_ID));
 
                     //        Toast.makeText(CategoriesActivity.this, catId, Toast.LENGTH_SHORT).show();
 
