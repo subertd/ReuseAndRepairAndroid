@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
@@ -76,7 +75,7 @@ public class OrgListingActivity extends ActionBarActivity {
             Intent i = getIntent();
             String itemId = i.getStringExtra("itemId");
 
-            return new MySQLiteOpenHelper(OrgListingActivity.this).getOrgsCursor((Long.valueOf(itemId)));
+            return new MySQLiteOpenHelper(OrgListingActivity.this).getOrganizationsCursorByReuseItem((Long.valueOf(itemId)));
 
       //          return new MySQLiteOpenHelper(OrgListingActivity.this).getItemsCursorByCategory((Long.valueOf(itemId)));
         }
