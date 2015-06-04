@@ -61,6 +61,14 @@ public class MainActivity extends ActionBarActivity {
         startActivity(categoriesActivity);
     }
 
+    public void onClickRepairCategoriesButton(final View button) {
+
+        Log.i(TAG, "entering onClickRepairCategoriesButton");
+
+        final Intent categoriesRepairActivity = new Intent(this, CategoriesRepairActivity.class);
+        startActivity(categoriesRepairActivity);
+    }
+
     private void syncDatabase() {
         new DatabaseSynchronizer().execute();
     }

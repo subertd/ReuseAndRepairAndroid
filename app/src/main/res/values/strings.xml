@@ -12,4 +12,8 @@
     <string name="title_activity_org_listing">OrgListingActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_categories_repair">CategoriesRepairActivity</string>
+    <string name="title_activity_item_repair_listing">ItemRepairListingActivity</string>
+    <string name="title_activity_org_repair_listing">OrgRepairListingActivity</string>
+    <string name="title_activity_organizations_repair">OrganizationsRepairActivity</string>
 </resources>

@@ -51,6 +51,18 @@
             android:name=".OrgListingActivity"
             android:label="@string/title_activity_org_listing" >
         </activity>
+        <activity
+            android:name=".CategoriesRepairActivity"
+            android:label="@string/title_activity_categories_repair" >
+        </activity>
+        <activity
+            android:name=".ItemRepairListingActivity"
+            android:label="@string/title_activity_item_repair_listing" >
+        </activity>
+        <activity
+            android:name=".OrgRepairListingActivity"
+            android:label="@string/title_activity_org_repair_listing" >
+        </activity>
     </application>
 
 </manifest>
