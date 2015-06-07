@@ -69,6 +69,14 @@ public class MainActivity extends ActionBarActivity {
         startActivity(categoriesRepairActivity);
     }
 
+    public void onClickMapButton(final View button) {
+
+        Log.i(TAG, "entering onClickMapsButton");
+
+        final Intent mapsActivity = new Intent(this, MapsActivity.class);
+        startActivity(mapsActivity);
+    }
+
     private void syncDatabase() {
         new DatabaseSynchronizer().execute();
     }

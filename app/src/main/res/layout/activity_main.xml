@@ -13,8 +13,10 @@
     <Button android:text="Donate an Item for Reuse" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:onClick="onClickCategoriesButton"/>
 
-
     <Button android:text="Have an Item Repaired" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:onClick="onClickRepairCategoriesButton"/>
+
+    <Button android:text="View the map" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:onClick="onClickMapButton"/>
 
 </LinearLayout>

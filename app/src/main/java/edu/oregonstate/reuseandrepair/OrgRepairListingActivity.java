@@ -84,6 +84,7 @@ public class OrgRepairListingActivity extends ActionBarActivity {
             // populate a list view with the cursor
             listView = (ListView) findViewById(R.id.orgRepair_list);
 
+            // Get a list of organizations
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     OrgRepairListingActivity.this,
                     R.layout.activity_org_repair_listing_entry,
@@ -110,6 +111,10 @@ public class OrgRepairListingActivity extends ActionBarActivity {
                     startActivity(i);
                 }
             });
+
+            // Create a map
+     //       GoogleMap googleMap;
+      //      googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         }
     }
 }

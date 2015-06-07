@@ -81,7 +81,7 @@ public class CategoriesActivity extends ActionBarActivity {
 
             // populate a list view with the cursor
             listView = (ListView) findViewById(R.id.cat_list);
-
+//fdv
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     CategoriesActivity.this,
                     R.layout.activity_categories_entry,
