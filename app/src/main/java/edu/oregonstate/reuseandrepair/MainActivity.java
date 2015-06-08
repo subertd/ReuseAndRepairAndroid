@@ -1,11 +1,14 @@
 package edu.oregonstate.reuseandrepair;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -20,28 +23,70 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
+    private static final int REUSE = 0;
+    private static final int REPAIR = 1;
+    private static final int LINK_1 = 2;
+    private static final int LINK_2 = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setUpOptions();
         syncDatabase();
     }
 
-    public void onClickCategoriesButton(final View button) {
+    private void setUpOptions() {
 
-        Log.i(TAG, "entering onClickCategoriesButton");
-
-        final Intent categoriesActivity = new Intent(this, CategoriesReuseActivity.class);
-        startActivity(categoriesActivity);
+        final ListView options = (ListView)findViewById(R.id.options);
+        options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position) {
+                    case REUSE:
+                        startReuseCategories();
+                        break;
+                    case REPAIR:
+                        startRepairCategories();
+                        break;
+                    case LINK_1:
+                        linkUrl1();
+                        break;
+                    case LINK_2:
+                        linkUrl2();
+                        break;
+                }
+            }
+        });
     }
 
-    public void onClickRepairCategoriesButton(final View button) {
+    private void startReuseCategories() {
 
-        Log.i(TAG, "entering onClickRepairCategoriesButton");
+        Log.i(TAG, "entering startReuseCategories");
+
+        final Intent categoriesReuseActivity = new Intent(this, CategoriesReuseActivity.class);
+        startActivity(categoriesReuseActivity);
+    }
+
+    private void startRepairCategories() {
+
+        Log.i(TAG, "entering startRepairCategories");
 
         final Intent categoriesRepairActivity = new Intent(this, CategoriesRepairActivity.class);
         startActivity(categoriesRepairActivity);
+    }
+
+    private void linkUrl1() {
+        Intent openBrowser = new Intent(Intent.ACTION_VIEW);
+        openBrowser.setData(Uri.parse(getString(R.string.url_republic_curbside)));
+        startActivity(openBrowser);
+    }
+
+    private void linkUrl2() {
+        Intent openBrowser = new Intent(Intent.ACTION_VIEW);
+        openBrowser.setData(Uri.parse(getString(R.string.url_republic_accepted_items)));
+        startActivity(openBrowser);
     }
 
     private void syncDatabase() {

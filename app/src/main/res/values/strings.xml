@@ -6,8 +6,8 @@
     <string-array name="main_activity_options">
         <item>Donate an Item for Reuse</item>
         <item>Get an Item Repaired</item>
-        <item>[Whatever that first link is supposed to be]</item>
-        <item>[The second link]</item>
+        <item>Republic Curbside Recycling</item>
+        <item>Republic Accepted Items</item>
     </string-array>
 
     <string name="title_activity_categories_reuse">Categories of Reusable Items</string>
