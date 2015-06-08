@@ -32,49 +32,73 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".CategoriesActivity"
-            android:label="@string/title_activity_categories"
+            android:name=".CategoriesReuseActivity"
+            android:label="@string/title_activity_categories_reuse"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.oregonstate.reuseandrepair.MainActivity" />
         </activity>
         <activity
-            android:name=".ItemsActivity"
-            android:label="@string/title_activity_items"
-            android:parentActivityName=".CategoriesActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.reuseandrepair.CategoriesActivity" />
-        </activity>
-        <activity
-            android:name=".OrganizationsActivity"
-            android:label="@string/title_activity_organizations"
-            android:parentActivityName=".ItemsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.oregonstate.reuseandrepair.ItemsActivity" />
-        </activity>
-        <activity
-            android:name=".ItemListingActivity"
-            android:label="ItemListingActivity" >
-        </activity>
-        <activity
-            android:name=".OrgListingActivity"
-            android:label="@string/title_activity_org_listing" >
-        </activity>
-        <activity
             android:name=".CategoriesRepairActivity"
-            android:label="@string/title_activity_categories_repair" >
+            android:label="@string/title_activity_categories_repair"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ItemReuseListingActivity"
+            android:label="@string/title_activity_item_reuse_listing"
+            android:parentActivityName=".CategoriesReuseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.CategoriesReuseActivity" />
         </activity>
         <activity
             android:name=".ItemRepairListingActivity"
-            android:label="@string/title_activity_item_repair_listing" >
+            android:label="@string/title_activity_item_repair_listing"
+            android:parentActivityName=".CategoriesRepairActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.CategoriesRepairActivity" />
+        </activity>
+
+        <activity
+            android:name=".OrgReuseListingActivity"
+            android:label="@string/title_activity_orgs_reuse_listing"
+            android:parentActivityName=".ItemReuseListingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.ItemReuseListingActivity" />
         </activity>
         <activity
             android:name=".OrgRepairListingActivity"
-            android:label="@string/title_activity_org_repair_listing" >
+            android:label="@string/title_activity_orgs_repair_listing"
+            android:parentActivityName=".ItemRepairListingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.ItemRepairListingActivity" />
+        </activity>
+
+        <activity
+            android:name=".OrganizationReuseActivity"
+            android:label="@string/title_activity_org_reuse"
+            android:parentActivityName=".ItemReuseListingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.OrgReuseListingActivity" />
+        </activity>
+        <activity
+            android:name=".OrganizationRepairActivity"
+            android:label="@string/title_activity_org_repair"
+            android:parentActivityName=".ItemRepairListingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.oregonstate.reuseandrepair.OrgRepairListingActivity" />
         </activity>
 
         <meta-data

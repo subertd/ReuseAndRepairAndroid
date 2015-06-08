@@ -1,20 +1,29 @@
 <resources>
-    <string name="app_name">ReuseAndRepair</string>
+    <string name="app_name">Corvallis Reuse And Repair</string>
 
-    <string name="main_activity">Main Activity</string>
-    <string name="categories_activity">Categories Activity</string>
-    <string name="items_activity">Items Activity</string>
-    <string name="organizations_activity">Organizations Activity</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_categories">CategoriesActivity</string>
-    <string name="title_activity_items">ItemsActivity</string>
-    <string name="title_activity_organizations">OrganizationsActivity</string>
-    <string name="title_activity_org_listing">OrgListingActivity</string>
+    <string name="main_activity">Corvallis Reuse And Repair</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_categories_repair">CategoriesRepairActivity</string>
-    <string name="title_activity_item_repair_listing">ItemRepairListingActivity</string>
-    <string name="title_activity_org_repair_listing">OrgRepairListingActivity</string>
-    <string name="title_activity_organizations_repair">OrganizationsRepairActivity</string>
+    <string-array name="main_activity_options">
+        <item>Donate an Item for Reuse</item>
+        <item>Get an Item Repaired</item>
+        <item>[Whatever that first link is supposed to be]</item>
+        <item>[The second link]</item>
+    </string-array>
+
+    <string name="title_activity_categories_reuse">Categories of Reusable Items</string>
+    <string name="title_activity_categories_repair">Categories of Repairable Items</string>
+
+    <string name="title_activity_item_reuse_listing">Reusable Items</string>
+    <string name="title_activity_item_repair_listing">Repairable Items</string>
+
+    <string name="title_activity_orgs_reuse_listing">Organizations That Reuse Item</string>
+    <string name="title_activity_orgs_repair_listing">Organizations That Repair Item</string>
+
+    <string name="title_activity_org_reuse">Organization That Reuses Item</string>
+    <string name="title_activity_org_repair">Organization That Repairs Item</string>
+
+
     <string name="title_activity_maps">Map</string>
+
+    <string name="action_map">Map</string>
 </resources>

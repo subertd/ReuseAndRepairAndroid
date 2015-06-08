@@ -3,21 +3,18 @@ package edu.oregonstate.reuseandrepair;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
 
-public class CategoriesActivity extends ActionBarActivity {
+public class CategoriesReuseActivity extends AppCompatActivity {
 
     private static final String[] FROM = {
             MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID,
@@ -29,7 +26,7 @@ public class CategoriesActivity extends ActionBarActivity {
             R.id.cat_name
     };
 
-    private static final String TAG = CategoriesActivity.class.getName();
+    private static final String TAG = CategoriesReuseActivity.class.getName();
     ListView listView ;
 
     @Override
@@ -38,28 +35,6 @@ public class CategoriesActivity extends ActionBarActivity {
         setContentView(R.layout.activity_categories);
 
         populateCategoriesList();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_categories, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void populateCategoriesList() {
@@ -73,7 +48,7 @@ public class CategoriesActivity extends ActionBarActivity {
         @Override
         protected Cursor doInBackground(Void... params) {
 
-            return new MySQLiteOpenHelper(CategoriesActivity.this).getCategoriesCursor();
+            return new MySQLiteOpenHelper(CategoriesReuseActivity.this).getCategoriesCursor();
         }
 
         @Override
@@ -83,7 +58,7 @@ public class CategoriesActivity extends ActionBarActivity {
             listView = (ListView) findViewById(R.id.cat_list);
 //fdv
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                    CategoriesActivity.this,
+                    CategoriesReuseActivity.this,
                     R.layout.activity_categories_entry,
                     cursor,
                     FROM,
@@ -106,7 +81,7 @@ public class CategoriesActivity extends ActionBarActivity {
                     String catName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
 
                     // Start new activity to show list of matching organizations
-                    Intent i = new Intent(CategoriesActivity.this, ItemListingActivity.class);
+                    Intent i = new Intent(CategoriesReuseActivity.this, ItemReuseListingActivity.class);
                     i.putExtra("catId", catId);
                     i.putExtra("catName", catName);
                     startActivity(i);

@@ -3,11 +3,9 @@ package edu.oregonstate.reuseandrepair;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,8 +13,7 @@ import android.widget.SimpleCursorAdapter;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
-
-public class OrgListingActivity extends ActionBarActivity {
+public class OrgReuseListingActivity extends AppCompatActivity {
 
     private static final String[] FROM = {
             MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID,
@@ -28,7 +25,7 @@ public class OrgListingActivity extends ActionBarActivity {
             R.id.org_name
     };
 
-    private static final String TAG = OrgListingActivity.class.getName();
+    private static final String TAG = OrgReuseListingActivity.class.getName();
     ListView listView ;
 
     @Override
@@ -37,28 +34,6 @@ public class OrgListingActivity extends ActionBarActivity {
         setContentView(R.layout.activity_org_listing);
 
         populateOrgList();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_org_listing, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void populateOrgList() {
@@ -75,7 +50,7 @@ public class OrgListingActivity extends ActionBarActivity {
             Intent i = getIntent();
             String itemId = i.getStringExtra("itemId");
 
-            return new MySQLiteOpenHelper(OrgListingActivity.this).getOrganizationsCursorByReuseItem((Long.valueOf(itemId)));
+            return new MySQLiteOpenHelper(OrgReuseListingActivity.this).getOrganizationsCursorByReuseItem((Long.valueOf(itemId)));
         }
 
         @Override
@@ -85,7 +60,7 @@ public class OrgListingActivity extends ActionBarActivity {
             listView = (ListView) findViewById(R.id.org_list);
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                    OrgListingActivity.this,
+                    OrgReuseListingActivity.this,
                     R.layout.activity_org_listing_entry,
                     cursor,
                     FROM,
@@ -105,7 +80,7 @@ public class OrgListingActivity extends ActionBarActivity {
                     String orgId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID));
 
                     // Start new activity to show organization contact info
-                    Intent i = new Intent(OrgListingActivity.this, OrganizationsActivity.class);
+                    Intent i = new Intent(OrgReuseListingActivity.this, OrganizationReuseActivity.class);
                     i.putExtra("orgId", orgId);
                     startActivity(i);
                 }

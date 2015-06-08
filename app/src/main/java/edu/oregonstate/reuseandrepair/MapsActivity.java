@@ -94,8 +94,8 @@ public class MapsActivity extends FragmentActivity {
 
             if (addresses.size() > 0) {
 
-                final double latitude = (double) addresses.get(0).getLatitude();
-                final double longitude = (double) addresses.get(0).getLongitude();
+                final double latitude = addresses.get(0).getLatitude();
+                final double longitude = addresses.get(0).getLongitude();
 
 
                 final CameraPosition target = new CameraPosition.Builder().target(

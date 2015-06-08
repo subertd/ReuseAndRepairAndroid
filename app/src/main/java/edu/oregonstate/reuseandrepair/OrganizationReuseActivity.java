@@ -2,12 +2,11 @@ package edu.oregonstate.reuseandrepair;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,10 +14,9 @@ import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 import edu.oregonstate.reuseandrepair.models.Organization;
 
 
-public class OrganizationsActivity extends ActionBarActivity {
+public class OrganizationReuseActivity extends AppCompatActivity {
 
-    ListView listView;
-    private static final String TAG = OrganizationsActivity.class.getName();
+    private static final String TAG = OrganizationReuseActivity.class.getName();
 
     private static final String UNLISTED = "unlisted";
 
@@ -27,14 +25,14 @@ public class OrganizationsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_organizations);
+        setContentView(R.layout.activity_organization);
         populateOrgInfo();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_organizations, menu);
+        getMenuInflater().inflate(R.menu.menu_organization, menu);
         return true;
     }
 
@@ -46,10 +44,7 @@ public class OrganizationsActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.action_map) {
+        if (id == R.id.action_map) {
             displayOrgOnMap();
         }
 
@@ -69,9 +64,9 @@ public class OrganizationsActivity extends ActionBarActivity {
 
             Intent i = getIntent();
             String orgId = i.getStringExtra("orgId");
-            final Organization organization = new MySQLiteOpenHelper(OrganizationsActivity.this).getOrganizationById((Long.valueOf(orgId)));
+            final Organization organization = new MySQLiteOpenHelper(OrganizationReuseActivity.this).getOrganizationById((Long.valueOf(orgId)));
 
-            OrganizationsActivity.this.organization = organization;
+            OrganizationReuseActivity.this.organization = organization;
 
             return organization;
         }
@@ -80,7 +75,7 @@ public class OrganizationsActivity extends ActionBarActivity {
         protected void onPostExecute(final Organization organization) {
 
             if (organization == null) {
-                Toast.makeText(OrganizationsActivity.this, "Unable to get Organization Data", Toast.LENGTH_LONG).show();
+                Toast.makeText(OrganizationReuseActivity.this, "Unable to get Organization Data", Toast.LENGTH_LONG).show();
                 return;
             }
 
