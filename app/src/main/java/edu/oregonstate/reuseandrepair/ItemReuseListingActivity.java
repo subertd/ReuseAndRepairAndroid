@@ -63,7 +63,7 @@ public class ItemReuseListingActivity extends AppCompatActivity {
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     ItemReuseListingActivity.this,
-                    R.layout.activity_item_listing_entry,
+                    R.layout.item_reuse_listing_entry,
                     cursor,
                     FROM,
                     TO,

@@ -21,8 +21,8 @@ public class OrgRepairListingActivity extends AppCompatActivity {
     };
 
     private static final int[] TO = {
-            R.id.orgRepair_id,
-            R.id.orgRepair_name
+            R.id.org_id,
+            R.id.org_name
     };
 
     private static final String TAG = OrgRepairListingActivity.class.getName();
@@ -62,7 +62,7 @@ public class OrgRepairListingActivity extends AppCompatActivity {
             // Get a list of organizations
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     OrgRepairListingActivity.this,
-                    R.layout.activity_org_repair_listing_entry,
+                    R.layout.org_repair_listing_entry,
                     cursor,
                     FROM,
                     TO,

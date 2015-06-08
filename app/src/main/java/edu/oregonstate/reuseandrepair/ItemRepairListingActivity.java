@@ -22,8 +22,8 @@ public class ItemRepairListingActivity extends AppCompatActivity {
     };
 
     private static final int[] TO = {
-            R.id.itemRepair_id,
-            R.id.itemRepair_name
+            R.id.item_id,
+            R.id.item_name
     };
 
     private static final String TAG = ItemRepairListingActivity.class.getName();
@@ -58,11 +58,11 @@ public class ItemRepairListingActivity extends AppCompatActivity {
         protected void onPostExecute(final Cursor cursor) {
 
             // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.itemRepair_list);
+            listView = (ListView) findViewById(R.id.item_list);
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     ItemRepairListingActivity.this,
-                    R.layout.activity_item_repair_listing_entry,
+                    R.layout.item_repair_listing_entry,
                     cursor,
                     FROM,
                     TO,

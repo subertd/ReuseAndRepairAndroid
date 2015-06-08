@@ -32,7 +32,7 @@ public class CategoriesReuseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_categories);
+        setContentView(R.layout.activity_categories_reuse);
 
         populateCategoriesList();
     }
@@ -59,7 +59,7 @@ public class CategoriesReuseActivity extends AppCompatActivity {
 //fdv
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     CategoriesReuseActivity.this,
-                    R.layout.activity_categories_entry,
+                    R.layout.categories_entry,
                     cursor,
                     FROM,
                     TO,

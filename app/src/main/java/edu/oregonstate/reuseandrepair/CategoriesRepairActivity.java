@@ -22,8 +22,8 @@ public class CategoriesRepairActivity extends AppCompatActivity {
     };
 
     private static final int[] TO = {
-            R.id.catRepair_id,
-            R.id.catRepair_name
+            R.id.cat_id,
+            R.id.cat_name
     };
 
     private static final String TAG = CategoriesRepairActivity.class.getName();
@@ -59,7 +59,7 @@ public class CategoriesRepairActivity extends AppCompatActivity {
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     CategoriesRepairActivity.this,
-                    R.layout.activity_categories_repair_entry,
+                    R.layout.categories_entry,
                     cursor,
                     FROM,
                     TO,

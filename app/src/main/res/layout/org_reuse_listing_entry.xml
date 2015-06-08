@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/catRepair_id"
+        android:id="@+id/org_id"
         android:layout_gravity="center_horizontal"
         android:visibility="invisible"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/catRepair_name"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/org_name"
+        android:layout_gravity="center_horizontal"
+        android:textSize="@dimen/text_size_list_entry" />
 
 </LinearLayout>

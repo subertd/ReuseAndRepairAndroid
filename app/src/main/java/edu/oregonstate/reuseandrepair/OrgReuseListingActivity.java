@@ -31,7 +31,7 @@ public class OrgReuseListingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_org_listing);
+        setContentView(R.layout.activity_org_reuse_listing);
 
         populateOrgList();
     }
@@ -61,7 +61,7 @@ public class OrgReuseListingActivity extends AppCompatActivity {
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     OrgReuseListingActivity.this,
-                    R.layout.activity_org_listing_entry,
+                    R.layout.org_reuse_listing_entry,
                     cursor,
                     FROM,
                     TO,
