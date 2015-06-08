@@ -5,3 +5,4 @@
 .DS_Store
 /build
 *.apk
+**/google_maps_api.xml
