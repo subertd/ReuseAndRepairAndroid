@@ -1,7 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,10 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
+import edu.oregonstate.reuseandrepair.models.Organization;
 
 
 public class OrganizationsActivity extends ActionBarActivity {
@@ -20,27 +20,15 @@ public class OrganizationsActivity extends ActionBarActivity {
     ListView listView;
     private static final String TAG = OrganizationsActivity.class.getName();
 
-    private static final String[] FROM = {
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID,
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_NAME,
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_PHONE_NUMBER,
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_PHYSICAL_ADDRESS,
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_WEBSITE_URL
-    };
+    private static final String UNLISTED = "unlisted";
 
-    private static final int[] TO = {
-            R.id.org_id,
-            R.id.org_name,
-            R.id.org_phone,
-            R.id.org_address,
-            R.id.org_url
-    };
+    private Organization organization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organizations);
-        populateOrgInfoList();
+        populateOrgInfo();
     }
 
     @Override
@@ -61,41 +49,68 @@ public class OrganizationsActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_map) {
+            displayOrgOnMap();
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void populateOrgInfoList() {
-        Log.i(TAG, "entering populateOrgInfoList");
+    private void populateOrgInfo() {
+        Log.i(TAG, "entering populateOrgInfo");
 
-        new OrgInfoListPopulator().execute();
+        new OrgInfoPopulator().execute();
     }
 
-    private class OrgInfoListPopulator extends AsyncTask<Void, Void, Cursor> {
+    private class OrgInfoPopulator extends AsyncTask<Void, Void, Organization> {
 
         @Override
-        protected Cursor doInBackground(Void... params) {
+        protected Organization doInBackground(Void... params) {
 
             Intent i = getIntent();
             String orgId = i.getStringExtra("orgId");
-            return new MySQLiteOpenHelper(OrganizationsActivity.this).getOrgInfoCursor((Long.valueOf(orgId)));
+            final Organization organization = new MySQLiteOpenHelper(OrganizationsActivity.this).getOrganizationById((Long.valueOf(orgId)));
+
+            OrganizationsActivity.this.organization = organization;
+
+            return organization;
         }
 
         @Override
-        protected void onPostExecute(final Cursor cursor) {
+        protected void onPostExecute(final Organization organization) {
 
-            // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.orgInfo_list);
+            if (organization == null) {
+                Toast.makeText(OrganizationsActivity.this, "Unable to get Organization Data", Toast.LENGTH_LONG).show();
+                return;
+            }
 
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(
-                    OrganizationsActivity.this,
-                    R.layout.activity_organizations_entry,
-                    cursor,
-                    FROM,
-                    TO,
-                    0);
+            TextView nameField = (TextView)findViewById(R.id.organization_name);
+            TextView phoneNumberField = (TextView)findViewById(R.id.phone_number);
+            TextView websiteUrlField = (TextView)findViewById(R.id.website_url);
+            TextView physicalAddressField = (TextView)findViewById(R.id.physical_address);
 
-            listView.setAdapter(adapter);
+            final String name = organization.getName();
+            final String phoneNumber = organization.getPhoneNumber();
+            final String websiteUrl = organization.getWebsiteUrl();
+            final String physicalAddress = organization.getPhysicalAddress();
+
+            nameField.setText(name);
+            phoneNumberField.setText(phoneNumber != null ? phoneNumber : UNLISTED);
+            websiteUrlField.setText(websiteUrl != null ? websiteUrl : UNLISTED);
+            physicalAddressField.setText(physicalAddress != null ? physicalAddress : UNLISTED);
         }
+    }
+
+    private void displayOrgOnMap() {
+
+        if (organization != null) {
+            final Intent mapView = new Intent(this, MapsActivity.class);
+            final String organizationName = organization.getName();
+            final String organizationAddress = organization.getPhysicalAddress();
+            mapView.putExtra("name", organizationName);
+            mapView.putExtra("address", organizationAddress);
+            startActivity(mapView);
+        }
+
     }
 }

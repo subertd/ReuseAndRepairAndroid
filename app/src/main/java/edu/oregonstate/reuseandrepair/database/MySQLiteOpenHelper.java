@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.oregonstate.reuseandrepair.models.Organization;
+
 /**
  * Created by Donald on 5/23/2015.
  *
@@ -36,9 +38,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     // Column name constants
     public static final String TABLE_ORGANIZATION_COL_ID = "_id";
     public static final String TABLE_ORGANIZATION_COL_NAME = "organization_name";
-    public static final String TABLE_ORGANIZATION_PHONE_NUMBER = "phone_number";
-    public static final String TABLE_ORGANIZATION_PHYSICAL_ADDRESS = "physical_address";
-    public static final String TABLE_ORGANIZATION_WEBSITE_URL = "website_url";
+    public static final String TABLE_ORGANIZATION_COL_PHONE_NUMBER = "phone_number";
+    public static final String TABLE_ORGANIZATION_COL_PHYSICAL_ADDRESS = "physical_address";
+    public static final String TABLE_ORGANIZATION_COL_WEBSITE_URL = "website_url";
 
     public static final String TABLE_CATEGORY_COL_ID = "_id";
     public static final String TABLE_CATEGORY_COL_NAME = "category_name";
@@ -56,6 +58,12 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TABLE_ORGANIZATION_REPAIR_ITEM_COL_ITEM_ID = "item_id";
     private static final String TABLE_ORGANIZATION_REPAIR_COL_ADDITIONAL_REPAIR_INFO = "additional_repair_info";
     //
+
+    // Column index constants
+    private static final int TABLE_ORGANIZATION_COL_INDEX_NAME = 1;
+    private static final int TABLE_ORGANIZATION__COL_INDEX_PHONE_NUMBER = 2;
+    private static final int TABLE_ORGANIZATION_COL_INDEX_WEBSITE_URL = 3;
+    private static final int TABLE_ORGANIZATION_COL_INDEX_PHYSICAL_ADDRESS = 4;
 
     //
     // Network data protocol constants
@@ -218,9 +226,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
                 final ContentValues contentValues = new ContentValues();
                 contentValues.put(TABLE_ORGANIZATION_COL_ID, organization.getLong(PRP_ORGANIZATION_ID));
                 contentValues.put(TABLE_ORGANIZATION_COL_NAME, organization.getString(PRP_ORGANIZATION_NAME));
-                contentValues.put(TABLE_ORGANIZATION_PHONE_NUMBER, organization.getString(PRP_ORGANIZATION_PHONE_NUMBER));
-                contentValues.put(TABLE_ORGANIZATION_PHYSICAL_ADDRESS, organization.getString(PRP_ORGANIZATION_PHYSICAL_ADDRESS));
-                contentValues.put(TABLE_ORGANIZATION_WEBSITE_URL, organization.getString(PRP_ORGANIZATION_WEBSITE_URL));
+                contentValues.put(TABLE_ORGANIZATION_COL_PHONE_NUMBER, organization.getString(PRP_ORGANIZATION_PHONE_NUMBER));
+                contentValues.put(TABLE_ORGANIZATION_COL_PHYSICAL_ADDRESS, organization.getString(PRP_ORGANIZATION_PHYSICAL_ADDRESS));
+                contentValues.put(TABLE_ORGANIZATION_COL_WEBSITE_URL, organization.getString(PRP_ORGANIZATION_WEBSITE_URL));
                 db.insertOrThrow(TABLE_ORGANIZATION, null, contentValues);
             }
         }
@@ -424,12 +432,32 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     // Data about organization matching orgId
-    public Cursor getOrgInfoCursor(final long orgId) {
+    public Organization getOrganizationById(final long orgId) {
         SQLiteDatabase db = getReadableDatabase();
         String orgIdString = String.valueOf(orgId);
         String selectionStatement = "_id=?";
         String[] selectionArgs = {orgIdString};
 
-        return db.query(TABLE_ORGANIZATION, null, selectionStatement, selectionArgs, null, null, null, null);
+        final Cursor results = db.query(TABLE_ORGANIZATION, null, selectionStatement, selectionArgs, null, null, null, null);
+
+        if (results.getCount() != 1) {
+            return null;
+        }
+
+        results.moveToFirst();
+
+        final String name = results.getString(TABLE_ORGANIZATION_COL_INDEX_NAME);
+        final String phoneNumber = results.getString(TABLE_ORGANIZATION__COL_INDEX_PHONE_NUMBER);
+        final String physicalAddress = results.getString(TABLE_ORGANIZATION_COL_INDEX_PHYSICAL_ADDRESS);
+        final String websiteUrl = results.getString(TABLE_ORGANIZATION_COL_INDEX_WEBSITE_URL);
+
+        final Organization organization = new Organization();
+
+        organization.setName(name.equals("null") ? null : name);
+        organization.setPhoneNumber(phoneNumber.equals("null") ? null : phoneNumber);
+        organization.setPhysicalAddress(physicalAddress.equals("null") ? null : physicalAddress);
+        organization.setWebsiteUrl(websiteUrl.equals("null") ? null : websiteUrl);
+
+        return organization;
     }
 }

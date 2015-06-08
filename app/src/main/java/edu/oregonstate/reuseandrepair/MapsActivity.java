@@ -1,13 +1,22 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -17,6 +26,8 @@ public class MapsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //setUpMap();
         setUpMapIfNeeded();
     }
 
@@ -61,8 +72,47 @@ public class MapsActivity extends FragmentActivity {
      * just add a marker near Africa.
      * <p/>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
+     *
+     * @citation this method uses code from:
+     * http://www.androidhive.info/2013/08/android-working-with-google-maps-v2/
+     * and
+     * http://stackoverflow.com/questions/11932453/how-to-get-latitude-longitude-from-address-on-android
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        final String name = getIntent().getStringExtra("name");
+        final String address = getIntent().getStringExtra("address");
+
+        final Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            if (address == null) {
+                throw new IllegalArgumentException("There is no Address for this Organization");
+            }
+
+            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+
+            if (addresses.size() > 0) {
+
+                final double latitude = (double) addresses.get(0).getLatitude();
+                final double longitude = (double) addresses.get(0).getLongitude();
+
+
+                final CameraPosition target = new CameraPosition.Builder().target(
+                        new LatLng(latitude, longitude)).zoom(12).build();
+                final CameraUpdate update = CameraUpdateFactory.newCameraPosition(target);
+
+                mMap.moveCamera(update);
+                mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(name));
+            } else {
+                throw new MapException("No results");
+            }
+        }
+        catch (final MapException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        catch (final IOException e) {
+            Toast.makeText(this, "There was a problem interfacing with Google Maps", Toast.LENGTH_LONG).show();
+        }
     }
 }
