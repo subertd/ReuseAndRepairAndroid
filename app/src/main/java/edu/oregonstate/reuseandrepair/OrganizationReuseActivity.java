@@ -74,7 +74,12 @@ public class OrganizationReuseActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_map) {
-            displayOrgOnFullscreenMap();
+            try {
+                displayOrgOnFullscreenMap();
+            }
+            catch (final MapException e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -140,17 +145,45 @@ public class OrganizationReuseActivity extends AppCompatActivity {
         }
     }
 
-    private void displayOrgOnFullscreenMap() {
+    private void displayOrgOnFullscreenMap() throws MapException {
 
         if (organization != null) {
             final Intent mapView = new Intent(this, MapsActivity.class);
             final String organizationName = organization.getName();
             final String organizationAddress = organization.getPhysicalAddress();
-            mapView.putExtra("name", organizationName);
-            mapView.putExtra("address", organizationAddress);
-            startActivity(mapView);
-        }
 
+
+            final Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+            try {
+                if (organizationAddress == null) {
+                    throw new MapException("There is no Address for this Organization");
+                }
+
+                List<Address> addresses = geocoder.getFromLocationName(organizationAddress, 1);
+
+                if (addresses.size() > 0) {
+
+                    final double latitude = addresses.get(0).getLatitude();
+                    final double longitude = addresses.get(0).getLongitude();
+
+                    mapView.putExtra("name", organizationName);
+                    //mapView.putExtra("address", organizationAddress);
+                    mapView.putExtra("latitude", latitude);
+                    mapView.putExtra("longitude", longitude);
+                    startActivity(mapView);
+
+                } else {
+                    throw new MapException("The address of this organization is not valid");
+                }
+            }
+            catch (final IOException e) {
+                throw new MapException("Unable to get map data at this time");
+            }
+        }
+        else {
+            throw new MapException("An unknown error has occurred");
+        }
     }
 
     /*
