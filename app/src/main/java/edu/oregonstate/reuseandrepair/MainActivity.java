@@ -80,13 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void linkUrl1() {
         Intent openBrowser = new Intent(Intent.ACTION_VIEW);
-        openBrowser.setData(Uri.parse(getString(R.string.url_republic_curbside)));
+        final String uriString = getString(R.string.url_republic_curbside);
+        final Uri uri = Uri.parse(uriString);
+        openBrowser.setData(uri);
         startActivity(openBrowser);
     }
 
     private void linkUrl2() {
         Intent openBrowser = new Intent(Intent.ACTION_VIEW);
-        openBrowser.setData(Uri.parse(getString(R.string.url_republic_accepted_items)));
+        final String uriString = getString(R.string.url_republic_accepted_items);
+        final Uri uri = Uri.parse(uriString);
+        openBrowser.setData(uri);
         startActivity(openBrowser);
     }
 
