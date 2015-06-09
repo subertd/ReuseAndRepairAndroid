@@ -100,7 +100,7 @@ public class ItemRepairListingActivity extends AppCompatActivity {
                 Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                 // Get corresponding category id and name from this row
-                String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_CATEGORY_COL_ITEM_ID));
+                final long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_CATEGORY_COL_ITEM_ID));
                 final String itemName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
 
                 // Start new activity to show list of matching organizations

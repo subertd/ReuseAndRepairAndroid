@@ -65,9 +65,9 @@ public class OrganizationRepairActivity extends AppCompatActivity {
         @Override
         protected Organization doInBackground(Void... params) {
 
-            Intent i = getIntent();
-            String orgId = i.getStringExtra("orgId");
-            final Organization organization = new MySQLiteOpenHelper(OrganizationRepairActivity.this).getOrganizationById((Long.valueOf(orgId)));
+            final Intent i = getIntent();
+            final long orgId = i.getLongExtra("orgId", 0);
+            final Organization organization = new MySQLiteOpenHelper(OrganizationRepairActivity.this).getOrganizationById(orgId);
 
             OrganizationRepairActivity.this.organization = organization;
 

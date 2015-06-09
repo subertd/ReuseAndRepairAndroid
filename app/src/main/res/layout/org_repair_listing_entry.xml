@@ -27,6 +27,6 @@
         android:id="@+id/item_additional_info"
         android:layout_gravity="center_horizontal"
         android:textSize="@dimen/text_size_list_subtitle"
-        android:text="TEST TEST TEST remove this after debugging"/>
+        />
 
 </LinearLayout>

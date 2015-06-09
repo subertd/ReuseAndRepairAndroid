@@ -19,13 +19,15 @@ public class OrgRepairListingActivity extends AppCompatActivity {
     private static final String TAG = OrgRepairListingActivity.class.getName();
 
     private static final String[] FROM = {
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID,
-            MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_NAME
+            MySQLiteOpenHelper.TABLE_ORGANIZATION_REPAIR_ITEM_COL_ORGANIZATION_ID,
+            MySQLiteOpenHelper.TABLE_ORGANIZATION_REPAIR_ITEM_COL_ITEM_ID,
+            MySQLiteOpenHelper.TABLE_ORGANIZATION_REPAIR_COL_ADDITIONAL_REPAIR_INFO
     };
 
     private static final int[] TO = {
             R.id.org_id,
-            R.id.org_name
+            R.id.org_name,
+            R.id.item_additional_info
     };
 
     private static long itemId;
@@ -97,10 +99,10 @@ public class OrgRepairListingActivity extends AppCompatActivity {
                     Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                     // Get corresponding org id and name from this row
-                    String orgId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID));
+                    final long orgId = cursor.getLong(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID));
 
                     // Start new activity to show organization contact info
-                    Intent i = new Intent(OrgRepairListingActivity.this, OrganizationReuseActivity.class);
+                    Intent i = new Intent(OrgRepairListingActivity.this, OrganizationRepairActivity.class);
                     i.putExtra("orgId", orgId);
                     startActivity(i);
                 }
