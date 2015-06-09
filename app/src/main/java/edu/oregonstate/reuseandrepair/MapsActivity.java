@@ -55,13 +55,13 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
-            Toast.makeText(MapsActivity.this, "mMap is null", Toast.LENGTH_LONG).show();
+            //Toast.makeText(MapsActivity.this, "mMap is null", Toast.LENGTH_LONG).show();
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
-                Toast.makeText(MapsActivity.this, "mMap is now valid", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MapsActivity.this, "mMap is now valid", Toast.LENGTH_LONG).show();
                 setUpMap();
             }
         }

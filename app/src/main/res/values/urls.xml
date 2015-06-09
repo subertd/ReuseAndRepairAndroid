@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="url_republic_curbside">http://site.republicservices.com/site/corvallisor/en/documents/corvallisrecycledepot.pdf</string>
-    <string name="url_republic_accepted_items">http://site.republicservices.com/site/corvallisor/en/documents/detailedrecyclingguide.pdf</string>
+    <string name="url_republic_curbside">http://site.republicservices.com/site/corvallis-or/en/documents/corvallisrecycledepot.pdf</string>
+    <string name="url_republic_accepted_items">http://site.republicservices.com/site/corvallis-or/en/documents/detailedrecyclingguide.pdf</string>
 </resources>

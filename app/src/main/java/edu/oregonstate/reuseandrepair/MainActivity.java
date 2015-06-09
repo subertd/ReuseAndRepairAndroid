@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
     private class DatabaseSynchronizer extends AsyncTask<Void, Void, String> {
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected String doInBackground(Void... params) {
             try {
@@ -108,8 +111,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        /**
+         * @citation: http://www.android-ios-tutorials.com/android/android-asynctask-example-download-progress/
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(MainActivity.this, "Wait", "downloading...");
+        }
+
         @Override
         protected void onPostExecute(final String result) {
+            this.progressDialog.dismiss();
             Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
         }
     }

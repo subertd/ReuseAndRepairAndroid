@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class OrganizationRepairActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_map) {
-            displayOrgOnMap();
+            displayOrgOnFullscreenMap();
         }
 
         return super.onOptionsItemSelected(item);
@@ -59,6 +60,8 @@ public class OrganizationRepairActivity extends AppCompatActivity {
 
     private class OrgInfoPopulator extends AsyncTask<Void, Void, Organization> {
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected Organization doInBackground(Void... params) {
 
@@ -71,8 +74,19 @@ public class OrganizationRepairActivity extends AppCompatActivity {
             return organization;
         }
 
+        /**
+         * @citation: http://www.android-ios-tutorials.com/android/android-asynctask-example-download-progress/
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(OrganizationRepairActivity.this, "Wait", "downloading...");
+        }
+
         @Override
         protected void onPostExecute(final Organization organization) {
+
+            this.progressDialog.dismiss();
 
             if (organization == null) {
                 Toast.makeText(OrganizationRepairActivity.this, "Unable to get Organization Data", Toast.LENGTH_LONG).show();
@@ -96,7 +110,7 @@ public class OrganizationRepairActivity extends AppCompatActivity {
         }
     }
 
-    private void displayOrgOnMap() {
+    private void displayOrgOnFullscreenMap() {
 
         if (organization != null) {
             final Intent mapView = new Intent(this, MapsActivity.class);

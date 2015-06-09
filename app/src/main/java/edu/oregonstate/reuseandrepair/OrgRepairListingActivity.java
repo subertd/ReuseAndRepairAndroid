@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -15,6 +16,8 @@ import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
 public class OrgRepairListingActivity extends AppCompatActivity {
 
+    private static final String TAG = OrgRepairListingActivity.class.getName();
+
     private static final String[] FROM = {
             MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_ID,
             MySQLiteOpenHelper.TABLE_ORGANIZATION_COL_NAME
@@ -25,13 +28,18 @@ public class OrgRepairListingActivity extends AppCompatActivity {
             R.id.org_name
     };
 
-    private static final String TAG = OrgRepairListingActivity.class.getName();
-    ListView listView ;
+    private static long itemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_repair_listing);
+
+        final Intent i = getIntent();
+        final long itemId = i.getLongExtra("itemId", 0);
+        if (itemId > 0) {
+            OrgRepairListingActivity.itemId = itemId;
+        }
 
         populateOrgRepairList();
     }
@@ -44,20 +52,31 @@ public class OrgRepairListingActivity extends AppCompatActivity {
 
     private class OrgRepairListPopulator extends AsyncTask<Void, Void, Cursor> {
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected Cursor doInBackground(Void... params) {
 
-            Intent i = getIntent();
-            String itemId = i.getStringExtra("itemId");
+            return new MySQLiteOpenHelper(OrgRepairListingActivity.this)
+                    .getOrganizationsCursorByRepairItem(OrgRepairListingActivity.itemId);
+        }
 
-            return new MySQLiteOpenHelper(OrgRepairListingActivity.this).getOrganizationsCursorByRepairItem((Long.valueOf(itemId)));
+        /**
+         * @citation: http://www.android-ios-tutorials.com/android/android-asynctask-example-download-progress/
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(OrgRepairListingActivity.this, null, "populating...");
         }
 
         @Override
         protected void onPostExecute(final Cursor cursor) {
 
+            this.progressDialog.dismiss();
+
             // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.orgRepair_list);
+            final ListView listView = (ListView) findViewById(R.id.orgRepair_list);
 
             // Get a list of organizations
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
@@ -86,10 +105,6 @@ public class OrgRepairListingActivity extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-
-            // Create a map
-     //       GoogleMap googleMap;
-      //      googleMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         }
     }
 }

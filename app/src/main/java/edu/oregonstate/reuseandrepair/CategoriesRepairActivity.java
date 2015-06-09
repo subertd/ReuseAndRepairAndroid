@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -16,6 +17,8 @@ import edu.oregonstate.reuseandrepair.database.MySQLiteOpenHelper;
 
 public class CategoriesRepairActivity extends AppCompatActivity {
 
+    private static final String TAG = CategoriesRepairActivity.class.getName();
+
     private static final String[] FROM = {
             MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID,
             MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME
@@ -26,24 +29,23 @@ public class CategoriesRepairActivity extends AppCompatActivity {
             R.id.cat_name
     };
 
-    private static final String TAG = CategoriesRepairActivity.class.getName();
-    ListView listView ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories_repair);
 
-        populateCategoriesRepairList();
+        populateCategoriesList();
     }
 
-    private void populateCategoriesRepairList() {
-        Log.i(TAG, "entering populateCategoriesRepairList");
+    private void populateCategoriesList() {
+        Log.i(TAG, "entering populateCategoriesList");
 
-        new CategoriesRepairListPopulator().execute();
+        new CategoriesListPopulator().execute();
     }
 
-    private class CategoriesRepairListPopulator extends AsyncTask<Void, Void, Cursor> {
+    private class CategoriesListPopulator extends AsyncTask<Void, Void, Cursor> {
+
+        private ProgressDialog progressDialog;
 
         @Override
         protected Cursor doInBackground(Void... params) {
@@ -51,11 +53,22 @@ public class CategoriesRepairActivity extends AppCompatActivity {
             return new MySQLiteOpenHelper(CategoriesRepairActivity.this).getCategoriesCursor();
         }
 
+        /**
+         * @citation: http://www.android-ios-tutorials.com/android/android-asynctask-example-download-progress/
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(CategoriesRepairActivity.this, null, "populating...");
+        }
+
         @Override
         protected void onPostExecute(final Cursor cursor) {
 
+            this.progressDialog.dismiss();
+
             // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.catRepair_list);
+            final ListView listView = (ListView) findViewById(R.id.catRepair_list);
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     CategoriesRepairActivity.this,
@@ -74,14 +87,14 @@ public class CategoriesRepairActivity extends AppCompatActivity {
                                         final View view, final int position, final long id)
                 {
                     // Set cursor at click position
-                    Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+                    final Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
                     // Get corresponding category id and name from this row
-                    String catId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID));
-                    String catName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
+                    final long catId = cursor.getLong(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_ID));
+                    final String catName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
 
                     // Start new activity to show list of matching organizations
-                    Intent i = new Intent(CategoriesRepairActivity.this, ItemRepairListingActivity.class);
+                    final Intent i = new Intent(CategoriesRepairActivity.this, ItemRepairListingActivity.class);
                     i.putExtra("catId", catId);
                     i.putExtra("catName", catName);
                     startActivity(i);

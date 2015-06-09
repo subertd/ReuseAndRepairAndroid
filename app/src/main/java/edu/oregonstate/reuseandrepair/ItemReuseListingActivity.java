@@ -1,5 +1,6 @@
 package edu.oregonstate.reuseandrepair;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -28,12 +29,19 @@ public class ItemReuseListingActivity extends AppCompatActivity {
             R.id.item_name
     };
 
-    ListView listView ;
+    private static long catId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_listing);
+
+        // Set catId Parameter
+        final Intent currentIntent = getIntent();
+        long catId = currentIntent.getLongExtra("catId", 0);
+        if (catId > 0) {
+            ItemReuseListingActivity.catId = catId;
+        }
 
         populateItemList();
     }
@@ -46,20 +54,30 @@ public class ItemReuseListingActivity extends AppCompatActivity {
 
     private class ItemsListPopulator extends AsyncTask<Void, Void, Cursor> {
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected Cursor doInBackground(Void... params) {
 
-            Intent i = getIntent();
-            String catId = i.getStringExtra("catId");
-
             return new MySQLiteOpenHelper(ItemReuseListingActivity.this).getItemsCursorByCategory((Long.valueOf(catId)));
+        }
+
+        /**
+         * @citation: http://www.android-ios-tutorials.com/android/android-asynctask-example-download-progress/
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.progressDialog = ProgressDialog.show(ItemReuseListingActivity.this, null, "populating...");
         }
 
         @Override
         protected void onPostExecute(final Cursor cursor) {
 
+            this.progressDialog.dismiss();
+
             // populate a list view with the cursor
-            listView = (ListView) findViewById(R.id.item_list);
+            final ListView listView = (ListView) findViewById(R.id.item_list);
 
             SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                     ItemReuseListingActivity.this,
@@ -75,22 +93,32 @@ public class ItemReuseListingActivity extends AppCompatActivity {
 
                 @Override
                 public void onItemClick(final AdapterView<?> listView,
-                                        final View view, final int position, final long id)
-                {
+                                        final View view, final int position, final long id) {
+
                     // Set cursor at click position
-                    Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+                    final Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
-                    // Get corresponding category id and name from this row
-                    String itemId = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_CATEGORY_COL_ITEM_ID));
-
-                    //        Toast.makeText(CategoriesReuseActivity.this, catId, Toast.LENGTH_SHORT).show();
+                    // Get category id and name from this row
+                    final long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_ITEM_CATEGORY_COL_ITEM_ID));
+                    final String itemName = cursor.getString(cursor.getColumnIndexOrThrow(MySQLiteOpenHelper.TABLE_CATEGORY_COL_NAME));
 
                     // Start new activity to show list of matching organizations
-                    Intent i = new Intent(ItemReuseListingActivity.this, OrgReuseListingActivity.class);
+                    final Intent currentIntent = getIntent();
+                    final Intent i = new Intent(ItemReuseListingActivity.this, OrgReuseListingActivity.class);
+                    i.putExtra("catId", currentIntent.getLongExtra("catId", 0));
                     i.putExtra("itemId", itemId);
-                    startActivity(i);
+                    i.putExtra("itemName", itemName);
+                    startActivityForResult(i, MyActivityResults.REUSE_ITEMS_FROM_ORGS);
                 }
             });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        if (requestCode == MyActivityResults.REUSE_ITEMS_FROM_ORGS) {
+            ItemReuseListingActivity.catId = intent.getLongExtra("catId", 0);
         }
     }
 }

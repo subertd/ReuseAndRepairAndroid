@@ -5,13 +5,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="edu.oregonstate.reuseandrepair.OrganizationReuseActivity">
+    tools:context=".OrganizationReuseActivity .OrganizationRepairActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/organization_name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/text_size_page_heading"
         android:textStyle="bold"
         android:text="placeholder"
         />
@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="\nPhone Number "
         />
 
@@ -27,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/phone_number"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="placeholder"
         />
 
@@ -34,12 +36,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="\nWebsite Url "/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/website_url"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="placeholder"
         />
 
@@ -47,13 +51,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="\nPhysical Address "/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/physical_address"
+        android:textSize="@dimen/text_size_list_entry"
         android:text="placeholder"
         />
+
+    <!--
+    <fragment
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mini_map"
+        android:visibility="invisible"
+        />
+        -->
 
 </LinearLayout>
